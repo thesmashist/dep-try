@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-3^co5jecy1_h50^7ok+2_*6xdx=p0_5o(1i*%@$*v7mj^9$!)2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -63,7 +63,8 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:4200',
     'http://127.0.0.1:4200',
     'http://127.0.0.1:8000',
-    'http://localhost:62376'
+    'http://localhost:62376',
+    'ang-dj.herokuapp.com'
 )
 CORS_ALLOW_CREDENTIALS = True
 
