@@ -15,4 +15,3 @@ simplejson==3.17.6
 sqlparse==0.4.2
 tzdata==2021.5
 whitenoise==6.1.0
-pymssql
