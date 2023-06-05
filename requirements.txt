@@ -1,5 +1,4 @@
 ﻿asgiref==3.5.0
-django-pyodbc-azure
 django-mssql-backend
 dj-database-url==0.5.0
 Django
