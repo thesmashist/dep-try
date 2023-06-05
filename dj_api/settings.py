@@ -101,7 +101,7 @@ WSGI_APPLICATION = 'dj_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'sqlserver_pymssql',
+        'ENGINE': 'sqlserver_ado',
         'NAME': 'D3_DEV',
         'USER': 'd3admin@d3aumelb.database.windows.net',
         'PASSWORD': 'St33lS0ld13rs',
@@ -109,8 +109,9 @@ DATABASES = {
         'PORT': 1433,
 
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-        },
+            'provider': 'SQLNCLI11',
+            'extra_params': 'DataTypeCompatibility=80;MARS Connection=True;',
+        }
     },
 }
 
