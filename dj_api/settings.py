@@ -107,9 +107,9 @@ DATABASES = {
         'PASSWORD': 'St33lS0ld13rs',
         'HOST': 'd3aumelb.database.windows.net',
         'PORT': 1433,
+
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Use the appropriate driver name
-            'isolation_level':'READ UNCOMMITTED' #to prevent deadlocks
+            'driver': 'ODBC Driver 17 for SQL Server',
         },
     },
 }
