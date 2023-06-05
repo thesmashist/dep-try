@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import pymssql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -100,7 +101,7 @@ WSGI_APPLICATION = 'dj_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'pymssql',
+        'ENGINE': 'sqlserver_pymssql',
         'NAME': 'D3_DEV',
         'USER': 'd3admin@d3aumelb.database.windows.net',
         'PASSWORD': 'St33lS0ld13rs',
