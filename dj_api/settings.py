@@ -64,14 +64,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:4200',
-    'http://127.0.0.1:4200',
-    'http://127.0.0.1:8000',
-    'http://localhost:62376',
-    'http://dddjango.herokuapp.com'
-)
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:4200',
+#     'http://127.0.0.1:4200',
+#     'http://127.0.0.1:8000',
+#     'http://localhost:62376',
+#     'http://dddjango.herokuapp.com'
+# )
 CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
