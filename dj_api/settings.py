@@ -65,7 +65,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:4200',
     'http://127.0.0.1:8000',
     'http://localhost:62376',
-    'ang-dj.herokuapp.com'
+    'http://ang-dj.herokuapp.com'
 )
 CORS_ALLOW_CREDENTIALS = True
 
