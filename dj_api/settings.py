@@ -14,13 +14,14 @@ from pathlib import Path
 import os
 import pymssql
 import mimetypes
+import django_heroku
+
 mimetypes.add_type("text/css", ".css", True)
 mimetypes.add_type("text/javascript", ".js", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
 
 
 # Quick-start development settings - unsuitable for production
@@ -174,3 +175,5 @@ AUTH_USER_MODEL = 'users.Memberuserdata'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+django_heroku.settings(locals())
