@@ -10,10 +10,11 @@ gunicorn==20.1.0
 mssql-django
 PyJWT==2.3.0
 pyodbc>=4.0.32
-pypyodbc 
+pypyodbc
 pytz==2021.3
 simplejson==3.17.6
 sqlparse==0.4.2
 tzdata==2021.5
 whitenoise==6.1.0
 django-pymssql
+django_heroku
