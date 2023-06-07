@@ -176,4 +176,6 @@ AUTH_USER_MODEL = 'users.Memberuserdata'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CSRF_FAILURE_VIEW = 'dj_api.views.csrf_failure'
+
 django_heroku.settings(locals())
