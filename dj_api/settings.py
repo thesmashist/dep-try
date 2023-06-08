@@ -151,7 +151,7 @@ WSGI_APPLICATION = 'dj_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'D3_DEV',
+        'NAME': 'D3_Test',
         'USER': 'd3admin@d3aumelb.database.windows.net',
         'PASSWORD': 'St33lS0ld13rs',
         'HOST': 'd3aumelb.database.windows.net',
