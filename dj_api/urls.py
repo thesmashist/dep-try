@@ -30,8 +30,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
 	# path('', include('app.urls')),
 	path('api/', include('users.urls')),
