@@ -16,27 +16,29 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic.base import TemplateView
-from rest_framework_simplejwt import views as jwt_views
+
 from django.urls import path
 from base.api import views
-from base.api.views import MyTokenObtainPairView
+from users import views as userviews
+from users.views import LoginView, UserView, MemberAPIView, MemberLogin, MemberList
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('base.api.urls')),
 
-    path('', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('', views.getRoutes),
+    path('api/token/', userviews.LoginView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', UserView.as_view(), name='token_refresh'),
+
+    path('api/member/', MemberList.as_view()),
+    path('api/member/<int:id>', MemberAPIView.as_view()),
+    path('api/login/<int:id>', MemberLogin.as_view()),
+    path('api/bbt/', MemberLogin.as_view()),
 
 	# path('', include('app.urls')),
-	path('api/', include('users.urls')),
 	path('bb/', include('bb.urls')),
 	path('forms/', include('forms.urls')),
 	path('fruits/', include('fruits.urls')),
-    re_path(r'^.*', TemplateView.as_view(template_name="home.html"), name="home")
+    # re_path(r'^.*', TemplateView.as_view(), name="home")
 ]

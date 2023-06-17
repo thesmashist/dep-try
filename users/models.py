@@ -347,6 +347,26 @@ class Memberdata(models.Model):
         managed = False
         db_table = 'MemberData'
 
+class Membersfull(models.Model):
+    id = models.IntegerField(db_column='ID', blank=True, primary_key=True)  # Field name made lowercase.
+    uid = models.CharField(db_column='UID', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    first_name = models.TextField(db_column='FIRST_NAME', blank=True, null=True)  # Field name made lowercase.
+    middle_name = models.TextField(db_column='MIDDLE_NAME', blank=True, null=True)  # Field name made lowercase.
+    last_name = models.TextField(db_column='LAST_NAME', blank=True, null=True)  # Field name made lowercase.
+    preferred_name = models.TextField(db_column='PREFERRED_NAME', blank=True, null=True)  # Field name made lowercase.
+    membergroup = models.CharField(db_column='MemberGroup', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    internal_position = models.IntegerField(db_column='Internal_Position', blank=True, null=True)  # Field name made lowercase.
+    inner_dept = models.CharField(db_column='Inner_Dept', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    group_imwy = models.CharField(db_column='Group_IMWY', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    region = models.CharField(db_column='Region', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    scjid = models.TextField(db_column='SCJID', blank=True, null=True)  # Field name made lowercase.
+    phone = models.TextField(db_column='Phone', blank=True, null=True)  # Field name made lowercase.
+    ct = models.TextField(db_column='CT', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'membersfull'
+
 
 class Regiondata(models.Model):
     rid = models.AutoField(db_column='RID', primary_key=True)  # Field name made lowercase.
@@ -537,7 +557,7 @@ class Memberuserdata(models.Model):
     date_joined = models.DateTimeField(db_column='Date_Joined', blank=True, null=True)  # Field name made lowercase.
     is_anonymous = models.BooleanField(db_column='Is_Anonymous', blank=True, null=True)  # Field name made lowercase.
     uid = models.CharField(db_column='UID', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    
+
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 

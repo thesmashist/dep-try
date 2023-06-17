@@ -456,7 +456,7 @@ class Memberuserdata(models.Model):
     date_joined = models.DateTimeField(db_column='Date_Joined', blank=True, null=True)  # Field name made lowercase.
     is_anonymous = models.BooleanField(db_column='Is_Anonymous', blank=True, null=True)  # Field name made lowercase.
     uid = models.CharField(db_column='UID', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    
+
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
@@ -482,6 +482,7 @@ class Memberlogindata(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     mid = models.IntegerField(db_column='MID')  # Field name made lowercase.
     logintime = models.DateTimeField(db_column='LoginTime', blank=True, null=True)  # Field name made lowercase.
+    uid = models.CharField(db_column='UID', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
