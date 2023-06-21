@@ -20,8 +20,9 @@ from django.views.generic.base import TemplateView
 from django.urls import path
 from base.api import views
 from users import views as userviews
-from users.views import LoginView, UserView, BBTList
+from users.views import LoginView, UserView
 from members import urls
+from bb.bbt import urls
 import debug_toolbar
 
 
@@ -33,11 +34,11 @@ urlpatterns = [
     path('api/token/', userviews.LoginView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', UserView.as_view(), name='token_refresh'),
 
-    path('api/bbt/', BBTList.as_view()),
     path('api/member/', include('members.urls')),
 
 	# path('', include('app.urls')),
 	path('bb/', include('bb.urls')),
+	path('bb/bbt', include('bb.bbt.urls')),
 	path('forms/', include('forms.urls')),
 	path('fruits/', include('fruits.urls')),
     path('__debug__/', include(debug_toolbar.urls)),

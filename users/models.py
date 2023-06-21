@@ -42,28 +42,6 @@ class Attendancedata(models.Model):
         db_table = 'AttendanceData'
 
 
-class Bbdata(models.Model):
-    bbid = models.AutoField(db_column='BBID', primary_key=True)  # Field name made lowercase.
-    fruitkey = models.IntegerField(db_column='FruitKey', blank=True, null=True)  # Field name made lowercase.
-    status = models.CharField(db_column='Status', max_length=50)  # Field name made lowercase.
-    created = models.DateTimeField(db_column='Created', blank=True, null=True)  # Field name made lowercase.
-    lastupdate = models.DateTimeField(db_column='LastUpdate', blank=True, null=True)  # Field name made lowercase.
-    fruitname = models.CharField(db_column='FruitName', max_length=50)  # Field name made lowercase.
-    l1_id = models.IntegerField(db_column='L1_ID')  # Field name made lowercase.
-    l2_id = models.IntegerField(db_column='L2_ID', blank=True, null=True)  # Field name made lowercase.
-    bbt_id = models.IntegerField(db_column='BBT_ID', blank=True, null=True)  # Field name made lowercase.
-    city = models.CharField(db_column='City', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    completed = models.BooleanField(db_column='Completed', blank=True, null=True)  # Field name made lowercase.
-    due_date = models.DateTimeField(db_column='Due_Date', blank=True, null=True)  # Field name made lowercase.
-    last_topic = models.TextField(db_column='Last_Topic', blank=True, null=True)  # Field name made lowercase.
-    stat_abbr = models.CharField(db_column='Stat_Abbr', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    label = models.CharField(db_column='Label', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    l2points = models.FloatField(db_column='L2Points', blank=True, null=True)  # Field name made lowercase.
-    l1points = models.FloatField(db_column='L1Points', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'BBData'
 
 
 class Dailystats(models.Model):
@@ -95,6 +73,27 @@ class Deptdata(models.Model):
         managed = False
         db_table = 'DeptData'
 
+class Memberuserdata(models.Model):
+    id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    password = models.CharField(db_column='Password', max_length=255)  # Field name made lowercase.
+    last_login = models.DateTimeField(db_column='Last_Login', blank=True, null=True)  # Field name made lowercase.
+    username = models.CharField(db_column='Username', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
+    is_superuser = models.BooleanField(db_column='Is_Superuser', blank=True, null=True)  # Field name made lowercase.
+    first_name = models.CharField(db_column='First_Name', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    last_name = models.CharField(db_column='Last_Name', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    is_staff = models.BooleanField(db_column='Is_Staff', blank=True, null=True)  # Field name made lowercase.
+    is_active = models.BooleanField(db_column='Is_Active', blank=True, null=True)  # Field name made lowercase.
+    is_authenticated = models.BooleanField(db_column='Is_Authenticated', blank=True, null=True)  # Field name made lowercase.
+    date_joined = models.DateTimeField(db_column='Date_Joined', blank=True, null=True)  # Field name made lowercase.
+    is_anonymous = models.BooleanField(db_column='Is_Anonymous', blank=True, null=True)  # Field name made lowercase.
+    uid = models.CharField(db_column='UID', max_length=50, blank=True, null=True)  # Field name made lowercase.
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
+
+    class Meta:
+        managed = False
+        db_table = 'MemberUserData'
 
 class Evactivity(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
@@ -541,26 +540,3 @@ class Whitelistrecdata(models.Model):
     class Meta:
         managed = False
         db_table = 'WhiteListRecData'
-
-
-class Memberuserdata(models.Model):
-    id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    password = models.CharField(db_column='Password', max_length=255)  # Field name made lowercase.
-    last_login = models.DateTimeField(db_column='Last_Login', blank=True, null=True)  # Field name made lowercase.
-    username = models.CharField(db_column='Username', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
-    is_superuser = models.BooleanField(db_column='Is_Superuser', blank=True, null=True)  # Field name made lowercase.
-    first_name = models.CharField(db_column='First_Name', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    last_name = models.CharField(db_column='Last_Name', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    is_staff = models.BooleanField(db_column='Is_Staff', blank=True, null=True)  # Field name made lowercase.
-    is_active = models.BooleanField(db_column='Is_Active', blank=True, null=True)  # Field name made lowercase.
-    is_authenticated = models.BooleanField(db_column='Is_Authenticated', blank=True, null=True)  # Field name made lowercase.
-    date_joined = models.DateTimeField(db_column='Date_Joined', blank=True, null=True)  # Field name made lowercase.
-    is_anonymous = models.BooleanField(db_column='Is_Anonymous', blank=True, null=True)  # Field name made lowercase.
-    uid = models.CharField(db_column='UID', max_length=50, blank=True, null=True)  # Field name made lowercase.
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
-
-    class Meta:
-        managed = False
-        db_table = 'MemberUserData'

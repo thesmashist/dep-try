@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from .views import AutoCompMemberView, LoginView, LogoutView, RegisterView, UserView, GEVAInitView, BBTAPInitView
+import debug_toolbar
 
 urlpatterns = [
 	path('register/', RegisterView.as_view()),

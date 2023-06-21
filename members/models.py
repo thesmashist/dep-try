@@ -1,28 +1,6 @@
 from django.db import models
 
 # Create your models here.
-class Memberuserdata(models.Model):
-    id = models.IntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    password = models.CharField(db_column='Password', max_length=255)  # Field name made lowercase.
-    last_login = models.DateTimeField(db_column='Last_Login', blank=True, null=True)  # Field name made lowercase.
-    username = models.CharField(db_column='Username', max_length=255, blank=True, null=True, unique=True)  # Field name made lowercase.
-    is_superuser = models.BooleanField(db_column='Is_Superuser', blank=True, null=True)  # Field name made lowercase.
-    first_name = models.CharField(db_column='First_Name', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    last_name = models.CharField(db_column='Last_Name', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    is_staff = models.BooleanField(db_column='Is_Staff', blank=True, null=True)  # Field name made lowercase.
-    is_active = models.BooleanField(db_column='Is_Active', blank=True, null=True)  # Field name made lowercase.
-    is_authenticated = models.BooleanField(db_column='Is_Authenticated', blank=True, null=True)  # Field name made lowercase.
-    date_joined = models.DateTimeField(db_column='Date_Joined', blank=True, null=True)  # Field name made lowercase.
-    is_anonymous = models.BooleanField(db_column='Is_Anonymous', blank=True, null=True)  # Field name made lowercase.
-    uid = models.CharField(db_column='UID', max_length=50, blank=True, null=True)  # Field name made lowercase.
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
-
-    class Meta:
-        managed = False
-        db_table = 'MemberUserData'
-
 class Membersfull(models.Model):
     id = models.IntegerField(db_column='ID', blank=True, primary_key=True)  # Field name made lowercase.
     uid = models.CharField(db_column='UID', max_length=255, blank=True, null=True)  # Field name made lowercase.

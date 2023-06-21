@@ -7,20 +7,21 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer, MemberSerializer,MemberLoginDataSerializer
-from .models import Memberuserdata as User
-from .models import Memberdata as Member
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
+from .models import Memberuserdata as User, Memberdata as Member, Whitelistdata as WL, Whitelistrecdata as WLR
 from forms.models import Memberlogindata
-from .models import Whitelistdata as WL
-from .models import Whitelistrecdata as WLR
 from django.db.models import Q
 from django.db import connection
 import jwt, datetime
 from django.utils import timezone
 from django.utils.timezone import now
 from django.http import JsonResponse
-from rest_framework import mixins
-from rest_framework import generics
 
+from rest_framework import generics, mixins
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django_filters.rest_framework import DjangoFilterBackend
 
 import json
 
@@ -197,27 +198,14 @@ class BBTAPInitView(APIView):
 
         return Response(result)
 
-class MemberAPIView(APIView):
-    def get(self, request, id):
-        member = Member.objects.get(pk=id)
-        serializer = MemberSerializer(member)
-        return Response(serializer.data)
 
-class MemberLogin(APIView):
-    def get(self, request, id):
-        Memberlogindata.objects.filter(id = id).update(logintime = timezone.now())
-        member = Memberlogindata.objects.get(pk=id)
-        serializer = MemberLoginDataSerializer(member)
-        return Response(serializer.data)
 
-class MemberList(mixins.ListModelMixin,
+class BBTList(mixins.ListModelMixin,
                 mixins.CreateModelMixin,
                 generics.GenericAPIView):
-        queryset = Member.objects.all()
+        queryset = Member.objects.filter(bbt = 1, btm__isnull=False).exclude(Q(region = "Perth"))
         serializer_class = MemberSerializer
 
+        @method_decorator(cache_page(60*60*2))
         def get(self, request, *args, **kwargs):
             return self.list(request, *args, **kwargs)
-
-        def post(self, request, *args, **kwargs):
-            return self.create(request, *args, **kwargs)

@@ -1,4 +1,3 @@
-
 from rest_framework import generics, mixins
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
@@ -12,8 +11,6 @@ from . import serializers, models
 from .models import Memberdata as Member
 from .serializers import MemberSerializer
 
-
-# Create your views here.
 class MemberAPIView(APIView):
     def get(self, request, id):
         member = Member.objects.get(pk=id)
@@ -36,7 +33,6 @@ class MemberByRegion(generics.ListAPIView):
         @method_decorator(cache_page(60*60*2))
         def get(self, request, *args, **kwargs):
             return self.list(request, *args, **kwargs)
-
 
 class MemberList(mixins.ListModelMixin,
                 mixins.CreateModelMixin,
