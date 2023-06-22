@@ -22,6 +22,7 @@ from base.api import views
 from users import views as userviews
 from users.views import LoginView, UserView
 from members import urls
+from fmp import urls
 from bb.bbt import urls
 import debug_toolbar
 
@@ -38,6 +39,7 @@ urlpatterns = [
 
 	# path('', include('app.urls')),
 	path('bb/', include('bb.urls')),
+	path('fmp/', include('fmp.urls')),
 	path('bb/bbt', include('bb.bbt.urls')),
 	path('forms/', include('forms.urls')),
 	path('fruits/', include('fruits.urls')),

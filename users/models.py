@@ -120,19 +120,6 @@ class Evgames(models.Model):
         managed = False
         db_table = 'EVGames'
 
-
-class Evseason(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    seasonname = models.CharField(db_column='SeasonName', max_length=255)  # Field name made lowercase.
-    startdate = models.DateTimeField(db_column='StartDate', blank=True, null=True)  # Field name made lowercase.
-    enddate = models.DateTimeField(db_column='EndDate', blank=True, null=True)  # Field name made lowercase.
-    region = models.TextField(db_column='Region', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'EVSeason'
-
-
 class Fallendata(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     fruitkey = models.IntegerField(db_column='FruitKey', blank=True, null=True)  # Field name made lowercase.
@@ -270,25 +257,7 @@ class Innerdeptdata(models.Model):
         db_table = 'InnerDeptData'
 
 
-class Meetingdata(models.Model):
-    meetingkey = models.AutoField(db_column='MeetingKey', primary_key=True)  # Field name made lowercase.
-    fruitkey = models.FloatField(db_column='FruitKey', blank=True, null=True)  # Field name made lowercase.
-    meetingnotes = models.TextField(db_column='MeetingNotes', blank=True, null=True)  # Field name made lowercase.
-    attendee_1 = models.FloatField(db_column='Attendee_1', blank=True, null=True)  # Field name made lowercase.
-    attendee_2 = models.FloatField(db_column='Attendee_2', blank=True, null=True)  # Field name made lowercase.
-    createdby = models.FloatField(db_column='CreatedBy', blank=True, null=True)  # Field name made lowercase.
-    modifiedby = models.FloatField(db_column='ModifiedBy', blank=True, null=True)  # Field name made lowercase.
-    modifieddate = models.TextField(db_column='ModifiedDate', blank=True, null=True)  # Field name made lowercase.
-    createddate = models.TextField(db_column='CreatedDate', blank=True, null=True)  # Field name made lowercase.
-    meetingdate = models.TextField(db_column='MeetingDate', blank=True, null=True)  # Field name made lowercase.
-    nextmeetingdate = models.TextField(db_column='NextMeetingDate', blank=True, null=True)  # Field name made lowercase.
-    metpicker = models.TextField(db_column='MetPicker', blank=True, null=True)  # Field name made lowercase.
-    proceedable = models.TextField(db_column='Proceedable', blank=True, null=True)  # Field name made lowercase.
-    reasonunproceedable = models.TextField(db_column='ReasonUnproceedable', blank=True, null=True)  # Field name made lowercase.
 
-    class Meta:
-        managed = False
-        db_table = 'MeetingData'
 
 
 class Memberdata(models.Model):

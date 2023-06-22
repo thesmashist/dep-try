@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'fruits',
     'forms',
     'bb',
+    'fmp',
     'members',
     'dj_api',
     'django.contrib.staticfiles',
