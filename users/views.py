@@ -23,6 +23,10 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django_filters.rest_framework import DjangoFilterBackend
 
+from members import models, serializers
+from members.models import Memberdata as Member
+from members.serializers import MemberSerializer
+
 import json
 
 
@@ -57,7 +61,7 @@ class LoginView(APIView):
             wlid.append(i.title)
         member = Member.objects.filter(id = user.id).first()
         print(member.internal_position)
-        if member.internal_position == 1 or (member.membergroup == 'Department' and member.tgw and member.condition == 'Active') or 'All' in wlid:
+        if member.internal_position == "1"or (member.membergroup == 'Department' and member.tgw and member.condition == 'Active') or 'All' in wlid:
             wlid.append('Leader')
         if int(member.internal_position) < 3 or 'All' in wlid:
             wlid.append('EVLeader')
@@ -209,3 +213,88 @@ class BBTList(mixins.ListModelMixin,
         @method_decorator(cache_page(60*60*2))
         def get(self, request, *args, **kwargs):
             return self.list(request, *args, **kwargs)
+
+class WhiteList():
+    def getWhiteList():
+        cursor = connection.cursor()
+        query = cursor.execute("""
+            SELECT MemberID, WLID FROM WhiteListRecData WHERE WLID IN (SELECT WID FROM WhiteListData WHERE Title IN ('All'))
+        """)
+        return [ dict( zip( [column[0] for column in cursor.description] , record ) ) for record in cursor.fetchall()]
+
+    def getJDSN():
+        cursor = connection.cursor()
+        query = cursor.execute("""
+            SELECT DISTINCT JDSN FROM CTData
+        """, [])
+        return [ dict( zip( [column[0] for column in cursor.description] , record ) ) for record in cursor.fetchall()]
+
+
+class PermissionsView(APIView):
+    def get(self, request, id):
+        member = Member.objects.get(pk=id)
+        serializer = MemberSerializer(member)
+        userData = serializer.data
+
+        position = ['Member']
+        jdsn = []
+        eduList = []
+        csamList = []
+        allList = []
+
+        WhiteListResult = WhiteList.getWhiteList()
+        JdsnResult = WhiteList.getJDSN()
+
+        for row in JdsnResult:
+            jdsn.append(row['JDSN'])
+
+        for row in WhiteListResult:
+            match row['WLID']:
+                case "3":
+                    eduList.append(row['MemberID'])
+                case "2":
+                    csamList.append(row['MemberID'])
+                case "1":
+                    allList.append(row['MemberID'])
+
+        if userData['id'] in jdsn:
+            position.append('JDSN')
+
+        if (
+            userData['internal_position'] == "1" and userData['group_imwy'] != 'Center Dept'
+            or (userData['internal_position'] == "1" and userData['group_imwy'] == 'Center Dept' and userData['internal_position'] == 'Leader')
+
+            or (userData['inner_dept'] == 'Evangelism' and userData['internal_position'] == 'Secretary' )
+            or (userData['membergroup'] == 'Department' and userData['tgw'] == "1" and userData['condition'] == 'Active')
+            or (userData['membergroup'] == 'Hangul' )
+            or (userData['membergroup'] == 'P0' and userData['tgw'] == "1" and userData['condition'] == 'Active')
+        ):
+            position.append('Leader')
+
+        if (
+            userData['uid'] in allList
+                or (userData['membergroup'] == 'Department' and userData['tgw'] == "1" and userData['condition'] == 'Active')
+                or (userData['membergroup'] == 'Hangul' )
+                or (userData['membergroup'] == 'P0' and userData['tgw'] == "1" and userData['condition'] == 'Active')
+        ):
+            position.append('Dept')
+
+        if userData['internal_position'] == "1" and userData['internal_position'] == "2" and userData['uid'] in allList and userData['id'] in JdsnResult and 'Leader' in position:
+            position.append('EVLeader')
+
+        if (
+            userData['bbt'] is True or userData['uid'] in allList
+        ):
+            position.append('bbt')
+
+        if (
+            userData['uid'] in csamList or userData['uid'] in allList
+        ):
+            position.append('CSAM')
+
+        if (
+            userData['uid'] in eduList or userData['uid'] in allList
+        ):
+            position.push('Edu')
+
+        return Response(position)

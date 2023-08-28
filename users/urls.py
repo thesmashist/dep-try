@@ -11,4 +11,5 @@ urlpatterns = [
 	path('gevainit/', GEVAInitView.as_view()),
 	path('bbtapinit/', BBTAPInitView.as_view()),
 	path('autoCompM/', AutoCompMemberView.as_view()),
+	path('permissions/<int:id>/', PermissionsView.as_view()),
 ]

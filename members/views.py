@@ -30,7 +30,7 @@ class MemberByRegion(generics.ListAPIView):
         filter_backends = [DjangoFilterBackend]
         filter_fields = ['region']
 
-        @method_decorator(cache_page(60*60*2))
+        # @method_decorator(cache_page(60*60*2))
         def get(self, request, *args, **kwargs):
             return self.list(request, *args, **kwargs)
 
@@ -40,7 +40,7 @@ class MemberList(mixins.ListModelMixin,
         queryset = Member.objects.all()
         serializer_class = MemberSerializer
 
-        @method_decorator(cache_page(60*60*2))
+        # @method_decorator(cache_page(60*60*2))
         def get(self, request, *args, **kwargs):
             return self.list(request, *args, **kwargs)
 

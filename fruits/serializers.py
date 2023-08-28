@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True}
         }
-        
+
     def create(self, validated_data):
         print(validated_data)
         instance = self.Meta.model(**validated_data)
@@ -25,10 +25,9 @@ class MemberSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True}
         }
-        
+
     def create(self, validated_data):
         print(validated_data)
         instance = self.Meta.model(**validated_data)
         instance.save()
         return instance
-        

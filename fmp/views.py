@@ -31,89 +31,58 @@ class EVSeason(APIView):
 
             return Response(results)
 
+class EVStatsOverall(APIView):
+    # @method_decorator(cache_page(60*60*2))
+    def get(self,request,id):
+            member = Member.objects.get(pk=id)
+            serializer = MemberSerializer(member)
+
+            cursor = connection.cursor()
+            query = cursor.execute("exec spTotalEvStats {0}".format(serializer.data['uid']))
+            results = [ dict( zip( [column[0] for column in cursor.description] , record ) ) for record in cursor.fetchall()]
+
+            BB = {}
+            ME = []
+            P = []
+            FA = []
+            FE = []
+            STB = []
+            ONG = []
+
+        # for row in BBResults:
+        #     print(row)
+        #     match row['STATUS']:
+        #         case "Missed Education":
+        #             ME.append(row)
+        #         case "Picking":
+        #             P.append(row)
+        #         case "Fallen":
+        #             FA.append(row)
+        #         case "First Education":
+        #             FE.append(row)
+        #         case "Stable":
+        #             STB.append(row)
+        #         case "Ongoing Education":
+        #             ONG.append(row)
+
+
+        # BB['ME'] = ME
+        # BB['FA'] = FA
+        # BB['FE'] = FE
+        # BB['P'] = P
+        # BB['ONG'] = ONG
+        # BB['STB'] = STB
+
+
+            return Response(results)
+
 class EVStats(APIView):
     def get(self,request,id):
             member = Member.objects.get(pk=id)
             serializer = MemberSerializer(member)
 
             cursor = connection.cursor()
-            query = cursor.execute("""
-                DECLARE @Fisher_id VARCHAR(6) = %s
-
-                DECLARE @ThisDate DATETIME2 = CAST((
-                SELECT SYSDATETIMEOFFSET() AT TIME ZONE 'AUS Eastern Standard Time'
-                        ) AS DATE);
-                DECLARE @ThisWeek DATETIME2 = CASE
-                        WHEN DATEPART(WEEKDAY, @ThisDate) BETWEEN 2
-                                AND 4
-                            THEN (
-                                    SELECT DATEADD(wk, DATEDIFF(wk, 0, @ThisDate) - 1, 3)
-                                    )
-                        ELSE (
-                                SELECT DATEADD(wk, DATEDIFF(wk, 0, @ThisDate), 3)
-                                )
-                        END;
-
-            SELECT ISNULL(SUM(F1_Points),0) AS F1
-                ,ISNULL(SUM(F2_Points),0) AS F2
-                ,ISNULL(SUM(A1_Points),0) AS A1
-                ,ISNULL(SUM(A2_Points),0) AS A2
-                ,ISNULL(SUM(PP1_Points),0) AS PP1
-                ,ISNULL(SUM(PP2_Points),0) AS PP2
-                ,ISNULL(SUM(L1_Points),0) AS L1
-                ,ISNULL(SUM(L2_Points),0) AS L2
-            FROM dbo.FruitData f
-            LEFT JOIN BBData AS BB ON f.FruitKey = BB.FruitKey
-            WHERE (
-                    (
-                        (
-                            f.L2_ID = @Fisher_id
-                            OR f.L1_ID = @Fisher_id
-                            )
-                        OR (
-                            f.PP1_ID = @Fisher_id
-                            OR f.PP2_ID = @Fisher_id
-                            )
-                        OR (
-                            f.F2_ID = @Fisher_id
-                            OR f.F1_ID = @Fisher_id
-                            )
-                        OR (
-                            f.Attendee_1_ID = @Fisher_id
-                            OR f.Attendee_2_ID = @Fisher_id
-                            )
-                    ) AND (
-                            (
-                                P_TIME BETWEEN @ThisWeek AND
-                                @ThisDate
-
-                                )
-                            OR (
-                                PP_TIME BETWEEN @ThisWeek AND
-                                @ThisDate
-                                )
-                            OR (
-                                M_TIME BETWEEN @ThisWeek AND
-                                @ThisDate
-                                )
-                            OR (
-                                F_TIME BETWEEN @ThisWeek AND
-                                @ThisDate
-                            )
-                        )
-                    )
-                OR (
-                    (
-                        F2_ID = @Fisher_id
-                        OR F1_ID = @Fisher_id
-                        )
-                    AND BB.Stat_Abbr IN (
-                        SELECT value
-                        FROM STRING_SPLIT('Ong,FE,STB,CT,CCT,ME,NCT', ',')
-                        )
-                    AND Completed = 0
-                    )
-            """, [serializer.data['uid']])
+            query = cursor.execute("exec spWeeklyEvStats {0}".format(serializer.data['uid']))
             results = [ dict( zip( [column[0] for column in cursor.description] , record ) ) for record in cursor.fetchall()]
 
             return Response(results)
