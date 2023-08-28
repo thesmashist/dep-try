@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 import os
 import pymssql
@@ -112,11 +115,11 @@ WSGI_APPLICATION = 'dj_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'D3_Test',
-        'USER': 'd3admin@d3aumelb.database.windows.net',
-        'PASSWORD': 'St33lS0ld13rs',
-        'HOST': 'd3aumelb.database.windows.net',
-        'PORT': 1433,
+        'NAME': os.environ.get('DB'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('PASS'),
+        'HOST': os.environ.get('HOST'),
+        'PORT': os.environ.get('DBPORT'),
 
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',

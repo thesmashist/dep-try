@@ -17,6 +17,5 @@ class BBTList(mixins.ListModelMixin,
         queryset = Member.objects.filter(bbt = 1, btm__isnull=False).exclude(Q(region = "Perth"))
         serializer_class = MemberSerializer
 
-        @method_decorator(cache_page(60*60*2))
         def get(self, request, *args, **kwargs):
             return self.list(request, *args, **kwargs)

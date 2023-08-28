@@ -11,7 +11,10 @@ def getRoutes(request):
         'api/token/verify',
         'api/member',
         'api/member/<int:id>',
-        'api/login/<int:id>'
+        'api/login/<int:id>',
+        'fmp/<int:id>/stats',
+        'fmp/<str:region>/season/<department>',
+        'bb/bbt/',
     ]
 
     return Response(routes)

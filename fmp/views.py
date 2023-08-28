@@ -14,6 +14,23 @@ from members import models, serializers
 from members.models import Memberdata as Member
 from members.serializers import MemberSerializer
 
+class EVSeason(APIView):
+    def get(self, request, region, department):
+            if(department == 'MW'): department = 'M&W Dept'
+
+            cursor = connection.cursor()
+            query = cursor.execute("""
+                SELECT TOP 1 ID
+                FROM EVSeason
+                WHERE StartDate < GETDATE()
+                    AND Region = %s
+                    AND Dept = %s
+                ORDER BY ID DESC
+            """, [region, department])
+            results = [ dict( zip( [column[0] for column in cursor.description] , record ) ) for record in cursor.fetchall()]
+
+            return Response(results)
+
 class EVStats(APIView):
     def get(self,request,id):
             member = Member.objects.get(pk=id)
@@ -22,17 +39,29 @@ class EVStats(APIView):
             cursor = connection.cursor()
             query = cursor.execute("""
                 DECLARE @Fisher_id VARCHAR(6) = %s
-                ,@ThisWeek DATETIME2 = %s
-                ,@ThisDate DATETIME2 = %s
 
-            SELECT SUM(F1_Points) AS F1
-                ,SUM(F2_Points) AS F2
-                ,SUM(A1_Points) AS A1
-                ,SUM(A2_Points) AS A2
-                ,SUM(PP1_Points) AS PP1
-                ,SUM(PP2_Points) AS PP2
-                ,SUM(L1_Points) AS L1
-                ,SUM(L2_Points) AS L2
+                DECLARE @ThisDate DATETIME2 = CAST((
+                SELECT SYSDATETIMEOFFSET() AT TIME ZONE 'AUS Eastern Standard Time'
+                        ) AS DATE);
+                DECLARE @ThisWeek DATETIME2 = CASE
+                        WHEN DATEPART(WEEKDAY, @ThisDate) BETWEEN 2
+                                AND 4
+                            THEN (
+                                    SELECT DATEADD(wk, DATEDIFF(wk, 0, @ThisDate) - 1, 3)
+                                    )
+                        ELSE (
+                                SELECT DATEADD(wk, DATEDIFF(wk, 0, @ThisDate), 3)
+                                )
+                        END;
+
+            SELECT ISNULL(SUM(F1_Points),0) AS F1
+                ,ISNULL(SUM(F2_Points),0) AS F2
+                ,ISNULL(SUM(A1_Points),0) AS A1
+                ,ISNULL(SUM(A2_Points),0) AS A2
+                ,ISNULL(SUM(PP1_Points),0) AS PP1
+                ,ISNULL(SUM(PP2_Points),0) AS PP2
+                ,ISNULL(SUM(L1_Points),0) AS L1
+                ,ISNULL(SUM(L2_Points),0) AS L2
             FROM dbo.FruitData f
             LEFT JOIN BBData AS BB ON f.FruitKey = BB.FruitKey
             WHERE (
@@ -55,21 +84,21 @@ class EVStats(APIView):
                             )
                     ) AND (
                             (
-                                P_TIME BETWEEN @ThisDate AND
-                                @ThisWeek
+                                P_TIME BETWEEN @ThisWeek AND
+                                @ThisDate
 
                                 )
                             OR (
-                                PP_TIME BETWEEN @ThisDate AND
-                                @ThisWeek
+                                PP_TIME BETWEEN @ThisWeek AND
+                                @ThisDate
                                 )
                             OR (
-                                M_TIME BETWEEN @ThisDate AND
-                                @ThisWeek
+                                M_TIME BETWEEN @ThisWeek AND
+                                @ThisDate
                                 )
                             OR (
-                                F_TIME BETWEEN @ThisDate AND
-                                @ThisWeek
+                                F_TIME BETWEEN @ThisWeek AND
+                                @ThisDate
                             )
                         )
                     )
@@ -84,7 +113,7 @@ class EVStats(APIView):
                         )
                     AND Completed = 0
                     )
-            """, [serializer.data['uid'],'2023-06-20 20:36:00',  '2023-05-17 20:36:00'])
+            """, [serializer.data['uid']])
             results = [ dict( zip( [column[0] for column in cursor.description] , record ) ) for record in cursor.fetchall()]
 
             return Response(results)

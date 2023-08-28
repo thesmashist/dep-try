@@ -20,7 +20,7 @@ from django.views.generic.base import TemplateView
 from django.urls import path
 from base.api import views
 from users import views as userviews
-from users.views import LoginView, UserView
+from users.views import LoginView, UserView, PermissionsView
 from members import urls
 from fmp import urls
 from bb.bbt import urls
@@ -34,11 +34,13 @@ urlpatterns = [
     path('', views.getRoutes),
     path('api/token/', userviews.LoginView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', UserView.as_view(), name='token_refresh'),
+    path('api/permissions/<int:id>/', PermissionsView.as_view()),
 
     path('api/member/', include('members.urls')),
 
 	# path('', include('app.urls')),
 	path('bb/', include('bb.urls')),
+	path('fmp/', include('fmp.urls')),
 	path('fmp/', include('fmp.urls')),
 	path('bb/bbt', include('bb.bbt.urls')),
 	path('forms/', include('forms.urls')),
